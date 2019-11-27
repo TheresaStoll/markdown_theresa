@@ -2,10 +2,8 @@
 title: Analysis of solutions for the governance and prevention of marine debris
 subtitle: 
 author:  Theresa Stoll
-affiliation: Oceans & Atmosphere # Or group/team
+affiliation: Oceans & Atmosphere 
 photo: resources/img/Theresa.jpeg
-
-short_title: Optional short title
 
 output: 
   DSreport::project_summary:
@@ -25,94 +23,68 @@ knitr::opts_chunk$set(
 library(tidyverse)
 library(gapminder)
 library(kableExtra)
+
 ```
 
 
 # Introduction
-As a PhD student affiliated with CSIRO's Oceans and Atmosphere Business Unit, I conduct research on marine debris, more specifically on solutions that can be utilised to prevent marine debris and improve the governance of this problem. Having just recently started my PhD candidature and having never coded before, my participation in the Data School FOCUS is an incredible opportunity. The skillsets taught during the Data School FOCUS are directly relevant for my PhD project. 
+As a PhD student affiliated with CSIRO's Oceans and Atmosphere Business Unit, I conduct research on marine debris, more specifically on solutions that can be utilised to prevent marine debris and improve the governance of this problem. Having just recently started my PhD candidature and having never coded before, the participation in the Data School FOCUS is an incredible opportunity for me. The skillsets taught during the Data School FOCUS are directly relevant for my PhD project. 
 
 # My Project
-As part of my PhD research, I will use ‘R’ to assess different data provided by the nonprofit advocacy group Ocean Conservancy to examine the effectiveness of different policies and practices to reduce marine debris entering the oceans. The datasets that I use throughout the Data School FOCUS consists of about 50,000 entries in different excel files. Each entry is a marine debris survey undertaken by volunteers who submitted their data to Ocean Conservancy (from the years 2011 until 2018. I had not yet done any analysis with the data prior to my participation in Data School FOCUS because knowledge of ‘R’ is essential for this analysis. That is why the participation in the Data School FOCUS is of immense benefit for my research.
-
-Rather than yourself, this is the space to introduce your **project**. What are your goals, what was your data, how do you plan to work with it? Perhaps show some example data if it would help.
-
-In order to build this demo poster correctly, you will also need to have installed the `tidyverse`, 
-`gapminder`, and `kableExtra` packages.
+As part of my PhD research, I will use R to assess different data provided by the nonprofit advocacy group Ocean Conservancy to examine the effectiveness of different policies and practices to reduce marine debris entering the oceans. The datasets that I use throughout the Data School FOCUS consists of about 50,000 entries in different excel files. Each entry is a marine debris survey undertaken by volunteers who submitted their data to Ocean Conservancy (from the years 2011 until 2018). I had not yet done any analysis with the data prior to my participation in Data School FOCUS because knowledge of ‘R’ is essential for this analysis. That is why the participation in the Data School FOCUS is of immense benefit for my research.
 
 ## Preliminary results
 
-This section will demonstrate the different visuals you might want use to show off your 
-project. Don't feel the need to go overboard, this is supposed to give a taste of the work you are
-doing rather than being a publication ready document.
-
-To get tables formatting correctly, use `knitr::kable` to convert the table to html format. If you also want to have alternate row highlighting, pass the result to `kable_styling('striped')` from the `kableExtra` package.
+I spent the majority of the time during the Data School FOCUS on tidying and manipulating my data. Due to the size and untidy nature of the data, tidying it was a mammoth effort! Over the past few weeks, I managed to tidy the data for the years 2011 until 2015 and combined these different datasets. I will continue to work on my data and aim to tidy the datasets for the remaining years sometime soon so that I can eventually combine them all. As I mainly focused on data tidying, wrangling and transformation during the past few weeks, I did not have a lot of time for conducting statistical analyses and creating plots with ggplot. The below is a plot that shows how many surveys were collected in which continent for the different years from 2011 until 2016. The below table is a subset of the combined dataset 2011-2015 that was used to create the plot. Unfortunately, working with the entire dataset 2011-2015 was very difficult as the file is so big that I am for example unable to save it as a csv file in R. 
 
 **Tables**
+
 ```{r mytable, out.width='100%', echo = T}
-knitr::kable(head(gapminder, n = 5), format = "html", caption = "A table of data") %>% 
+OC_data11_15 <- read.csv("resources/subset_OC_data.csv")
+
+knitr::kable(head(OC_data11_15, n = 5), format = "html", 
+             caption = "Tidy data, selected columns for plot below") %>% 
   kable_styling("striped")
+
+
 ```
 
-**Images from a file**
 
-![](resources/img/tidyverse.png){width=100px}
 
 **Plots from R**
-```{r standard-plot, out.width='60%', fig.align='center', fig.height= 4, fig.width=6, fig.cap="Yet another gapminder plot"}
-gapminder %>% 
-  filter(year == 1987) %>% 
-  ggplot(aes(x = gdpPercap, y = lifeExp, colour = continent, size = pop)) +
-  geom_point() +
-  scale_x_log10(labels = function(b) format(b, scientific = F)) +
-  scale_size(trans = "sqrt", guide = "none") +
-  scale_color_brewer(palette = "Set1") +
-  theme_linedraw() +
-  theme(legend.position = "bottom")
+```{r standard-plot, echo=TRUE, fig.align='center', fig.cap="Frequency of surveys in different continents", fig.height=4, fig.width=6, warning=FALSE, out.width='60%'}
+OC_data11_15<-OC_data11_15[which(!OC_data11_15$year=="2016"),]
+OC_data11_15$year<-factor(OC_data11_15$year)
+
+OC_data11_15<-OC_data11_15[which(!OC_data11_15$year=="2010"),]
+OC_data11_15$year<-factor(OC_data11_15$year)
+
+OC_surveys_table_year <-OC_data11_15 %>%  
+  group_by(year,continent,Country) %>%
+  summarise (n = n()) %>%
+  mutate(freq = n / sum(n))
+
+#OC_surveys_table_year
+
+OC_surveys_plot_year<-ggplot(OC_surveys_table_year,aes(x=year,y=freq,fill=continent,colour=continent))+
+  geom_histogram(stat="identity",position="dodge")+ 
+  xlab("year") + ylab("frequency of surveys") + theme(legend.position = "bottom") + theme_grey() + theme(axis.text.x = element_text(angle=90, vjust = 0.5)) 
+OC_surveys_plot_year
 ```
 
-Your figure and table captions are automatically numbered and can be referenced in the text
-if needed: see eg. Table \@ref(tab:mytable) and Figure \@ref(fig:standard-plot)
 
 # My Digital Toolbox
 
-As I had not yet had the chance to formally learn about 'R' prior to my participation in the Data School FOCUS, acquiring skills in the different R software packages was an unique and well-timed opportunity for me.
-
-
-What digital tools have you been using in your project? Which ones have you learned since starting 
-Data School?
-
-You can use all the usual R markdown features in writing a project summary, including lists:
-
-* R - dplyr, ggplot, ...
-* Python
-* SQL
+As I had not yet had the chance to formally learn about R, acquiring skills in all the different R software packages introduced as part of the Data School FOCUS was an unique and well-timed opportunity for me.
 
 # My time went ...
 
-The tidying of my data took much longer time and effort than expected. Applying the skills I learned in Data School FOCUS on best-practice data analysis, visualisation and management in the future will help me to save time and manage my data more effectively.
-
-What parts of the project took the most time and effort? Were there any surprising challenges you
-encountered, and how did you solve them?
+The tidying of my data took much longer time and effort than expected. Applying the skills I learned in Data School FOCUS on best-practice data analysis, visualisation and management will help me to save time and manage my data more effectively in the future.
 
 # Next steps
 
-I would be interested in learning more about gganimate.
-
-What further steps do you wish your project could take? Or are there any new digital skills that you are keen to develop as a result of your involvement in the Data School?
+Over the next few weeks, I will solidify my knowledge of R and will continue to apply it to my own data. I would be interested in learning more about other R packages such as gganimate.
 
 # My Data School Experience
 
-The possibility to establish fundamental programming and data analysis skills through the use of ‘R’ is immensely beneficial for my PhD research and professional development. Having just recently started my PhD candidature and having had no experience in programming or using ‘R’, the timing of the Data School FOCUS could not have been better. I started exploring ‘R’ before the Data School FOCUS. My participation in the Data School FOCUS helped me to understand and effectively apply ‘R’ and the associated R software packages to address my research questions. 
-Following my participation in Data School FOCUS, I will apply the skills I learned for my analysis which will take my PhD research to the enxt level. These skills will enable me to kick-start my PhD research and the associated analytical skills I need to succeed as a research scientist.
-
-
-
-
-
-
-This poster is mostly about your synthesis project. However we would also like to hear about other
-parts of your Data School experience. What aspects of the program did you really enjoy? How have you
-been applying the skills you have learned in your daily work? Have you been able to transfer this 
-knowledge to your team members? Concrete examples demonstrating this would be useful here
-(meetings/talks/collaborations/new roles). Any descriptions of the personal impact the program has 
-had are welcome here as well!
+The possibility to establish fundamental programming and data analysis skills through the use of R is immensely beneficial for my PhD research and professional development. Having just recently started my PhD candidature and having had no experience in programming or using R, the timing of the Data School FOCUS could not have been better. I started exploring R before the Data School FOCUS. My participation in the Data School FOCUS helped me to better understand apply ‘R’ and the associated R software packages which will help me to address my research questions. Following my participation in Data School FOCUS, I will apply the skills I learned for my data analysis which will take my PhD research to the next level. These skills will enable me to kick-start my PhD research and the associated analytical skills that I need to succeed as a research scientist.
