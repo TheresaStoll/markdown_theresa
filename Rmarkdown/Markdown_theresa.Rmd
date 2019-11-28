@@ -35,7 +35,11 @@ As part of my PhD research, I will use R to assess different data provided by th
 
 ## Preliminary results
 
-I spent the majority of the time during the Data School FOCUS on tidying and manipulating my data. Due to the size and untidy nature of the data, tidying it was a mammoth effort! Over the past few weeks, I managed to tidy the data for the years 2011 until 2015 and combined these different datasets. I will continue to work on my data and aim to tidy the datasets for the remaining years sometime soon so that I can eventually combine them all. As I mainly focused on data tidying, wrangling and transformation during the past few weeks, I did not have a lot of time for conducting statistical analyses and creating plots with ggplot. The below is a plot that shows how many surveys were collected in which continent for the different years from 2011 until 2016. The below table is a subset of the combined dataset 2011-2015 that was used to create the plot. Unfortunately, working with the entire dataset 2011-2015 was very difficult as the file is so big that I am for example unable to save it as a csv file in R. 
+I spent the majority of the time during the Data School FOCUS on tidying and manipulating my data. Due to the size and untidy nature of the data, tidying it was a mammoth effort! Over the past few weeks, I managed to tidy the data for the years 2011 until 2015 and combined these different datasets. I will continue to work on my data and aim to tidy the datasets for the remaining years sometime soon so that I can eventually combine them all. As I mainly focused on data tidying, wrangling and transformation during the past few weeks, I did not have a lot of time for conducting statistical analyses and creating plots with ggplot. 
+
+The below is a plot that shows how many surveys were collected in which continent for the different years from 2011 until 2016. The below table is a subset of the combined dataset 2011-2015 that was used to create the plot.
+
+Unfortunately, I am unable to display an example of the entire dataset 2011-2015 (including the different types of marine debris collected) that I was working on these past few weeks because the tidy data is so big that I am unable to save it as a csv file in R and hence import it to this Markdown document (R keeps crashing when I try to do it). 
 
 **Tables**
 
